@@ -12,6 +12,7 @@ Route::get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/task-list', [TaskController::class, 'taskList']);
+Route::get('/task-list/{id}', [TaskController::class, 'singleTaskShow']);
 
 // Authenticate Route
 Route::middleware('auth:sanctum')->group(function () {
