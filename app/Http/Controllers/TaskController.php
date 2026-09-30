@@ -35,6 +35,29 @@ class TaskController extends Controller
         ]);
     }
 
+    // 🔹 Single Tasks only frontend
+    public function singleTaskShow(int $id)
+    {
+        $task = Task::with('user')
+            ->where([
+                ['id', $id],
+                ['task_type', 'published']
+            ])
+            ->first();
+
+        if (!$task) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Task not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $task
+        ]);
+    }
+
     // 🔹 Store Task
     public function store(Request $request)
     {
@@ -61,7 +84,7 @@ class TaskController extends Controller
     }
 
     // 🔹 Single Task
-    public function show($id)
+    public function show(int $id)
     {
         $task = Task::find($id);
 
@@ -79,7 +102,7 @@ class TaskController extends Controller
     }
 
     // 🔹 Update Task
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $task = Task::where('id', $id)
             ->where('user_id', Auth::id())
@@ -109,7 +132,7 @@ class TaskController extends Controller
     }
 
     // 🔹 Delete Task
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $task = Task::where('id', $id)
             ->where('user_id', Auth::id())
